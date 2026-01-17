@@ -38,8 +38,26 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function handleFile(file) {
-        if (!file.type.startsWith('image/')) {
-            showMessage('Por favor, selecciona un archivo de imagen válido.', 'error');
+        const allowedTypes = [
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'image/webp',
+            'image/tiff',
+            'application/pdf',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+        ];
+
+        const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.tiff', '.tif', '.pdf', '.docx', '.xlsx', '.pptx'];
+        const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+
+        const isValidType = allowedTypes.includes(file.type) || file.type.startsWith('image/');
+        const isValidExtension = allowedExtensions.includes(fileExtension);
+
+        if (!isValidType && !isValidExtension) {
+            showMessage('Formato no soportado. Usa: JPEG, PNG, GIF, WebP, TIFF, PDF, DOCX, XLSX o PPTX.', 'error');
             return;
         }
 
